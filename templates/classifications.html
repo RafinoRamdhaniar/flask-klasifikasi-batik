@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classification</title>
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/normalize.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.less"> 
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/scss/style.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/scss/widgets.css">
+    <link href="/static/pestectionadmin/assets/css/lib/vector-map/jqvmap.min.css" rel="stylesheet"> 
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <style>
+        .bg-color {
+            background-color: rgb(4, 38, 236) !important;
+        }
+        .bg-color-content {
+            background-color: rgb(77, 82, 110) !important;
+        }
+        .center-cropped {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .right-panel {
+            margin-left: 250px; /* Matches left panel width */
+            padding: 20px;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Left Panel -->
+    <aside id="left-panel" class="left-panel bg-color">
+        <nav class="navbar navbar-expand-sm navbar-default bg-color">
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu"
+                    aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="./">
+                    <div class="center-cropped" style="background-image: url('../static/logo_batik_trans.png');">
+                    </div>
+                </a>
+                <a class="navbar-brand hidden" href="./">
+                    <img src="/static/pestectionadmin/images/logo2.png" alt="Logo">
+                </a>
+            </div>
+
+            <div id="main-menu" class="main-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for('cnn') }}"> <i class="menu-icon fa fa-fort-awesome"></i> Dashboard </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('classification') }}"> <i class="menu-icon fa fa-image"></i> Model CNN </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Right Panel -->
+    <div class="right-panel" style="background: linear-gradient(to right, #4facfe, #00f2fe); padding: 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+        <div class="card" style="background: #ffffff; border-radius: 15px; box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); padding: 25px; width: 100%; max-width: 500px;">
+            <header>
+                <h1 class="mb-4" style="color: #4facfe; text-align: center; font-weight: 700;">Upload an Image for Prediction</h1>
+            </header>
+            <main>
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label for="file" style="font-weight: bold; color: #333;">Choose an image file:</label>
+                        <input type="file" id="file" name="file" accept="image/*" required class="form-control" style="border: 2px solid #4facfe; border-radius: 8px; padding: 10px;">
+                    </div>
+    
+                    <!-- Dropdown for selecting the model -->
+                    <div class="form-group">
+                        <label for="model" style="font-weight: bold; color: #333;">Select Model:</label>
+                        <select id="model" name="model" class="form-control" required style="border: 2px solid #4facfe; border-radius: 8px; padding: 10px;">
+                            <option value="mobilenetv2">MobileNetV2</option>
+                            <option value="densenet121">DenseNet121</option>
+                            <option value="xception">Xception</option>
+                        </select>
+                    </div>
+    
+                    <button type="submit" class="btn btn-primary" style="background-color: #4facfe; color: white; border: none; border-radius: 8px; font-weight: bold; padding: 10px 20px; width: 100%; transition: all 0.3s ease;">
+                        Upload and Predict
+                    </button>
+                </form>
+                <div id="result" style="display: none; margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                    <p style="font-size: 16px; color: #333;"><strong>Predicted Class:</strong> <span id="predicted-class"></span></p>
+                    <p style="font-size: 16px; color: #333;"><strong>Confidence:</strong> <span id="confidence"></span></p>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script src="/static/pestectionadmin/assets/js/jquery.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/bootstrap.min.js"></script>
+    <script>
+        // Add hover effect on the button
+        document.querySelector('.btn-primary').addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#00f2fe';
+            this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        });
+    
+        document.querySelector('.btn-primary').addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#4facfe';
+            this.style.boxShadow = 'none';
+        });
+    
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('file');
+            const modelSelect = document.getElementById('model');
+            const model = modelSelect.value;  // Get selected model
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('model', model);  // Append the selected model
+    
+            const resultDiv = document.getElementById('result');
+            const predictedClassSpan = document.getElementById('predicted-class');
+            const confidenceSpan = document.getElementById('confidence');
+    
+            resultDiv.style.display = 'none'; // Hide result while processing
+    
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                const result = await response.json();
+                if (response.ok) {
+                    predictedClassSpan.textContent = result.predicted_class;
+                    confidenceSpan.textContent = result.confidence;
+                    resultDiv.style.display = 'block';
+                } else {
+                    alert(result.error || 'An error occurred');
+                }
+            } catch (error) {
+                alert('An error occurred while processing the request');
+            }
+        });
+    </script>
+    
+
+
+    <!-- <div class="right-panel">
+        <div class="card">
+            <header>
+                <h1 class="mb-4">Upload an Image for Prediction</h1>
+            </header>
+            <main>
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label for="file">Choose an image file:</label>
+                        <input type="file" id="file" name="file" accept="image/*" required class="form-control">
+                    </div>
+
+                    <-- Dropdown for selecting the model -->
+                    <!-- <div class="form-group">
+                        <label for="model">Select Model:</label>
+                        <select id="model" name="model" class="form-control" required>
+                            <option value="mobilenetv2">MobileNetV2</option>
+                            <option value="densenet121">DenseNet121</option>
+                            <option value="xception">Xception</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Upload and Predict</button>
+                </form>
+                <div id="result" style="display: none;">
+                    <p><strong>Predicted Class:</strong> <span id="predicted-class"></span></p>
+                    <p><strong>Confidence:</strong> <span id="confidence"></span></p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/pestectionadmin/assets/js/jquery.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('file');
+            const modelSelect = document.getElementById('model');
+            const model = modelSelect.value;  // Get selected model
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('model', model);  // Append the selected model
+
+            const resultDiv = document.getElementById('result');
+            const predictedClassSpan = document.getElementById('predicted-class');
+            const confidenceSpan = document.getElementById('confidence');
+
+            resultDiv.style.display = 'none'; // Hide result while processing
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    predictedClassSpan.textContent = result.predicted_class;
+                    confidenceSpan.textContent = result.confidence;
+                    resultDiv.style.display = 'block';
+                } else {
+                    alert(result.error || 'An error occurred');
+                }
+            } catch (error) {
+                alert('An error occurred while processing the request');
+            }
+        });
+    </script> --> -->
+</body>
+</html>

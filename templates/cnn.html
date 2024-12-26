@@ -1,0 +1,351 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KLASIFIKASI BATIK</title>
+    <meta name="description" content="KLASIFIKASI BATIK">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+ 
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/normalize.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-select.less"> 
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/scss/style.css">
+    <link rel="stylesheet" href="/static/pestectionadmin/assets/scss/widgets.css">
+    <link href="/static/pestectionadmin/assets/css/lib/vector-map/jqvmap.min.css" rel="stylesheet"> 
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <style>
+        .bg-color {
+            background-color: rgb(4, 38, 236) !important;
+        }
+        .bg-color-content {
+            background-color: rgb(77, 82, 110) !important;
+        }
+        .center-cropped {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Left Panel -->
+
+    <aside id="left-panel" class="left-panel bg-color">
+        <nav class="navbar navbar-expand-sm navbar-default bg-color">
+
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu"
+                    aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="./"><div class="center-cropped" 
+                    style="background-image: url('../static/logo_batik_trans.png');">
+               </div></a>
+                <a class="navbar-brand hidden" href="./"><img src="/static/pestectionadmin/images/logo2.png" alt="Logo"></a>
+            </div>
+
+            <div id="main-menu" class="main-menu collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for('cnn') }}"> <i class="menu-icon fa fa-fort-awesome"></i> Dashboard </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('classification') }}"> <i class="menu-icon fa fa-image"></i> Model CNN </a>
+                    </li>
+                    <li class="nav-item">
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
+    </aside><!-- /#left-panel -->
+
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+
+    <div id="right-panel" class="right-panel bg-color-content">
+
+        <!-- Header-->
+        <header id="header" class="header">
+
+            <div class="header-menu">
+
+                <div class="col-sm-7">
+                    <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
+                    <div class="header-left">
+                    </div>
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="user-area dropdown float-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <!-- <img class="user-avatar rounded-circle" src="/static/pestectionadmin/images/admin.jpg"
+                                alt="User Avatar"> -->
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </header><!-- /header -->
+        <!-- Header-->
+        <div class="content mt-3">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Result Tab</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="custom-tab">
+
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <!-- <a class="nav-item nav-link active" id="custom-nav-home-tab" data-toggle="tab"
+                                        href="#custom-nav-home" role="tab" aria-controls="custom-nav-home"
+                                        aria-selected="true">Chart</a>
+                                    <a class="nav-item nav-link" id="custom-nav-profile-tab" data-toggle="tab"
+                                        href="#custom-nav-profile" role="tab" aria-controls="custom-nav-profile"
+                                        aria-selected="false">Confusion Matrix</a> -->
+                                    <a class="nav-item nav-link" id="custom-nav-contact-tab" data-toggle="tab"
+                                        href="#custom-nav-contact" role="tab" aria-controls="custom-nav-contact"
+                                        aria-selected="false">Batik Lampung</a>
+                                    <a class="nav-item nav-link" id="custom-nav-rgb-tab" data-toggle="tab"
+                                        href="#custom-nav-rgb" role="tab" aria-controls="custom-nav-rgb"
+                                        aria-selected="false">Batik Yogyakarta</a>
+                                    <a class="nav-item nav-link" id="custom-nav-btk-tab" data-toggle="tab"
+                                        href="#custom-nav-btk" role="tab" aria-controls="custom-nav-btk"
+                                        aria-selected="false">Bukan Batik</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content pl-3 pt-2 text-center" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="custom-nav-home" role="tabpanel"
+                                    aria-labelledby="custom-nav-home-tab">
+                                    <h4><br/>Percobaan Model 1</h4>
+                                    <img src="/static/Model 1.png" alt="">
+                                    <h4><br/>Percobaan Model 2</h4>
+                                    <img src="/static/hasilC.png" alt="" >
+                                    <h4><br/>Percobaan Model MobileNetV2</h4>
+                                    <img src="/static/hasilD.png" alt="" >
+                                    <h4><br/>Percobaan Model DenseNet121</h4>
+                                    <img src="/static/Model DeseNet121.png" alt="" >
+                                    <h4><br/>Percobaan Model Xception</h4>
+                                    <img src="/static/Model Xception.png" alt="">
+                                </div>
+                                <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel"
+                                    aria-labelledby="custom-nav-profile-tab">
+                                    <h4>Hasil Prediksi Model 1</h4>
+                                    <img src="/static/Model 1.png" alt="" height="400px" width="400px">
+                                    <h4><br/>Hasil Prediksi Model 2</h4>
+                                    <img src="/static/Model 2.png" alt="" height="400px" width="400px">
+                                    <h4><br/>Hasil Prediksi Model MobileNetV2</h4>
+                                    <img src="/static/Model MobileNetV2.png" alt="" height="400px" width="400px">
+                                    <h4><br/>Hasil Prediksi Model DenseNet121</h4>
+                                    <img src="/static/Model DeseNet121.png" alt="" height="400px" width="400px">
+                                    <h4><br/>Hasil Prediksi Model Xception</h4>
+                                    <img src="/static/Model Xception.png" alt="" height="400px" width="400px">
+                                </div>
+                                <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel"
+                                    aria-labelledby="custom-nav-contact-tab">
+                                    <img src="/static/Batik Lampung1.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung2.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung3.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung4.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung5.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung6.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung7.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung8.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Lampung9.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                </div>
+                                <div class="tab-pane fade" id="custom-nav-rgb" role="tabpanel"
+                                    aria-labelledby="custom-nav-rgb-tab">
+                                    <img src="/static/Batik Yogyakarta1.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta2.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta3.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta4.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta5.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta6.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta7.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta8.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Batik Yogyakarta9.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                </div>
+                                <div class="tab-pane fade" id="custom-nav-btk" role="tabpanel"
+                                    aria-labelledby="custom-nav-btk-tab">
+                                    <img src="/static/Bukan Batik1.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik2.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik3.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik4.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik5.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik6.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik7.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik8.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                    <img src="/static/Bukan Batik9.jpg" alt="" height="300px" width="300px" style="margin: 10px;">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-link text-success border-success"></i></div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Accuracy Model 1</div>
+                                <div class="stat-digit">56.36%</div>
+                                <div class="stat-text">Accuracy Model 2</div>
+                                <div class="stat-digit">62.82%</div>
+                                <div class="stat-text">Accuracy Model MobileNetV2</div>
+                                <div class="stat-digit">96.20%</div>
+                                <div class="stat-text">Accuracy Model DenseNet121</div>
+                                <div class="stat-digit">95.06%</div>
+                                <div class="stat-text">Accuracy Model Xception</div>
+                                <div class="stat-digit">97.53%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-link text-success border-success"></i></div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Precision Model 1</div>
+                                <div class="stat-digit">63.00%</div>
+                                <div class="stat-text">Precision Model 2</div>
+                                <div class="stat-digit">77.00%</div>
+                                <div class="stat-text">Precision Model MobileNetV2</div>
+                                <div class="stat-digit">96.00%</div>
+                                <div class="stat-text">Precision Model DenseNet121</div>
+                                <div class="stat-digit">95.00%</div>
+                                <div class="stat-text">Precision Model Xception</div>
+                                <div class="stat-digit">97.00%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-link text-success border-success"></i></div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">Recall Model 1</div>
+                                <div class="stat-digit">56.45%</div>
+                                <div class="stat-text">Recall MOdel 2</div>
+                                <div class="stat-digit">66.00%</div>
+                                <div class="stat-text">Recall Model MobileNetV2</div>
+                                <div class="stat-digit">96.00%</div>
+                                <div class="stat-text">Recall Model DenseNet121</div>
+                                <div class="stat-digit">95.00%</div>
+                                <div class="stat-text">Recall Model Xception</div>
+                                <div class="stat-digit">97.00%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="stat-widget-one">
+                            <div class="stat-icon dib"><i class="ti-link text-success border-success"></i></div>
+                            <div class="stat-content dib">
+                                <div class="stat-text">F1 Score Model 1</div>
+                                <div class="stat-digit">50.00%</div>
+                                <div class="stat-text">F1 Score Model 2</div>
+                                <div class="stat-digit">60.00%</div>
+                                <div class="stat-text">F1 Score MobileNetV2</div>
+                                <div class="stat-digit">96.00%</div>
+                                <div class="stat-text">F1 Score DenseNet121</div>
+                                <div class="stat-digit">95.00%</div>
+                                <div class="stat-text">F1 Score Xception</div>
+                                <div class="stat-digit">97.00%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.col-->
+
+
+    <!--/.col-->
+
+
+    <!--/.col-->
+
+
+    <!--/.col-->
+
+
+    <!-- Right Panel -->
+
+    <script src="/static/pestectionadmin/assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/popper.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/plugins.js"></script>
+    <script src="/static/pestectionadmin/assets/js/main.js"></script>
+    <script src="/static/pestectionadmin/assets/js/lib/chart-js/Chart.bundle.js"></script>
+
+
+    <script src="/static/pestectionadmin/assets/js/lib/chart-js/Chart.bundle.js"></script>
+    <script src="/static/pestectionadmin/assets/js/dashboard.js"></script>
+    <script src="/static/pestectionadmin/assets/js/widgets.js"></script>
+    <script src="/static/pestectionadmin/assets/js/lib/vector-map/jquery.vmap.js"></script>
+    <script src="/static/pestectionadmin/assets/js/lib/vector-map/jquery.vmap.min.js"></script>
+    <script src="/static/pestectionadmin/assets/js/lib/vector-map/jquery.vmap.sampledata.js">
+    </script>
+    <script src="/static/pestectionadmin/assets/js/lib/vector-map/country/jquery.vmap.world.js">
+    </script>
+    <script>
+        (function ($) {
+            "use strict";
+
+            jQuery('#vmap').vectorMap({
+                map: 'world_en',
+                backgroundColor: null,
+                color: '#ffffff',
+                hoverOpacity: 0.7,
+                selectedColor: '#1de9b6',
+                enableZoom: true,
+                showTooltip: true,
+                values: sample_data,
+                scaleColors: ['#1de9b6', '#03a9f5'],
+                normalizeFunction: 'polynomial'
+            });
+        })(jQuery);
+    </script>
+
+</body>
+
+</html>
